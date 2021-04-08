@@ -1,13 +1,13 @@
 import React from "react";
 import ReactDOM from "react-dom";
-import { BrowserRouter, BrowserRouter as Router } from "react-router-dom";
+import { BrowserRouter } from "react-router-dom";
 import "./index.css";
 import App from "./App";
 
 import Auth0ProviderWithHistory from "./auth/auth0-provider-with-history";
 import { Provider } from "react-redux";
 
-import { createStore, applyMiddleware, compose } from "redux";
+import { createStore, compose } from "redux";
 
 import rootReducer from "./redux/reducers";
 

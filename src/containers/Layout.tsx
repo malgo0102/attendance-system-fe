@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 
 import { makeStyles } from "@material-ui/core/styles";
 import NavigationBar from "../components/NavigationBar";
@@ -18,7 +18,7 @@ const useStyles = makeStyles((theme) => ({
 
 const Layout = ({ children }: Props) => {
   const classes = useStyles();
-  const { user, isAuthenticated, isLoading } = useAuth0();
+  const { isAuthenticated, isLoading } = useAuth0();
 
   if (isLoading) {
     return <Spinner />;
