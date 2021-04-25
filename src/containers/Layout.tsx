@@ -5,6 +5,7 @@ import NavigationBar from "../components/NavigationBar";
 import { useAuth0 } from "@auth0/auth0-react";
 import LoginButton from "../components/LoginButton";
 import LogoutButton from "../components/LogoutButton";
+import ScheduleButton from "../components/ScheduleButton";
 import Spinner from "../components/Spinner";
 import { Toolbar } from "@material-ui/core";
 
@@ -26,7 +27,9 @@ const Layout = ({ children }: Props) => {
   return (
     <>
       <div className={classes.root}>
-        <NavigationBar>{isAuthenticated ? <LogoutButton /> : <LoginButton />}</NavigationBar>
+        <NavigationBar>
+          <ScheduleButton />
+          {isAuthenticated ? <LogoutButton /> : <LoginButton />}</NavigationBar>
         <main>
           <Toolbar />
           {children}
