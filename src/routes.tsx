@@ -1,9 +1,11 @@
 import React from "react";
-import { Switch, Route } from "react-router-dom";
+import {Switch, Route} from "react-router-dom";
 import Layout from "./containers/Layout";
 import FrontPage from "./pages/FrontPage";
 import StudentSchedule from "./pages/StudentSchedule";
+import CodePage from "./pages/CodePage";
 import TeacherStartAttendance from "./pages/TeacherStartAttendance";
+
 
 const Routes = () => {
   return (
@@ -14,16 +16,21 @@ const Routes = () => {
         </Layout>
       </Route>
       {/* <Redirect to="/" /> */}
+      <Route path="/code-page" exact>
+        <Layout>
+          <CodePage></CodePage>
+        </Layout>
+      </Route>
       <Route path="/student-schedule" exact>
         <Layout>
           <StudentSchedule></StudentSchedule>
         </Layout>
       </Route>
-        <Route path="/start-attendance" exact>
-            <Layout>
-                <TeacherStartAttendance></TeacherStartAttendance>
-            </Layout>
-        </Route>
+      <Route path="/start-attendance" exact>
+        <Layout>
+          <TeacherStartAttendance></TeacherStartAttendance>
+        </Layout>
+      </Route>
     </Switch>
   );
 };
