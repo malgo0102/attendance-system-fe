@@ -4,6 +4,8 @@ import Layout from "./containers/Layout";
 import FrontPage from "./pages/FrontPage";
 import StudentSchedule from "./pages/StudentSchedule";
 import CodePage from "./pages/CodePage";
+import TeacherStartAttendance from "./pages/TeacherStartAttendance";
+
 
 const Routes = () => {
   return (
@@ -24,6 +26,11 @@ const Routes = () => {
             <CodePage></CodePage>
         </Layout>
     </Route>
+        <Route path="/start-attendance" exact>
+            <Layout>
+                <TeacherStartAttendance></TeacherStartAttendance>
+            </Layout>
+        </Route>
     </Switch>
   );
 };
