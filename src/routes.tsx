@@ -3,6 +3,7 @@ import { Switch, Route } from "react-router-dom";
 import Layout from "./containers/Layout";
 import FrontPage from "./pages/FrontPage";
 import StudentSchedule from "./pages/StudentSchedule";
+import TeacherStartAttendance from "./pages/TeacherStartAttendance";
 
 const Routes = () => {
   return (
@@ -18,6 +19,11 @@ const Routes = () => {
           <StudentSchedule></StudentSchedule>
         </Layout>
       </Route>
+        <Route path="/start-attendance" exact>
+            <Layout>
+                <TeacherStartAttendance></TeacherStartAttendance>
+            </Layout>
+        </Route>
     </Switch>
   );
 };

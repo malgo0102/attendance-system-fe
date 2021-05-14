@@ -8,12 +8,13 @@ import LogoutButton from "../components/LogoutButton";
 import ScheduleButton from "../components/ScheduleButton";
 import Spinner from "../components/Spinner";
 import { Toolbar } from "@material-ui/core";
+import TeacherStartAttendanceButton from "../components/TeacherStartAttendanceButton";
 
 const useStyles = makeStyles((theme) => ({
   root: {
-    display: "flex",
-    maxWidth: "100vw",
-    overflowX: "hidden",
+    // display: "flex",
+    // maxWidth: "100vw",
+    // overflowX: "hidden",
   },
 }));
 
@@ -29,7 +30,9 @@ const Layout = ({ children }: Props) => {
       <div className={classes.root}>
         <NavigationBar>
           <ScheduleButton />
-          {isAuthenticated ? <LogoutButton /> : <LoginButton />}</NavigationBar>
+          <TeacherStartAttendanceButton />
+          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+        </NavigationBar>
         <main>
           <Toolbar />
           {children}
