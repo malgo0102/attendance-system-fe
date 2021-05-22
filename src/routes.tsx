@@ -5,6 +5,7 @@ import FrontPage from "./pages/FrontPage";
 import StudentSchedule from "./pages/StudentSchedule";
 import CodePage from "./pages/CodePage";
 import TeacherStartAttendance from "./pages/TeacherStartAttendance";
+import StudentListPage from "./pages/StudentListPage";
 
 
 const Routes = () => {
@@ -16,6 +17,11 @@ const Routes = () => {
         </Layout>
       </Route>
       {/* <Redirect to="/" /> */}
+      <Route path="/student-list" exact>
+        <Layout>
+          <StudentListPage></StudentListPage>
+        </Layout>
+      </Route>
       <Route path="/code-page" exact>
         <Layout>
           <CodePage></CodePage>
