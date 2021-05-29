@@ -9,6 +9,7 @@ import {useDispatch} from "react-redux";
 import {getUser} from "./redux/actions/user.actions";
 import {useAppSelector} from "./hooks";
 import Spinner from "./components/Spinner";
+import TeacherSchedule from "./pages/TeacherSchedule";
 
 const Routes = () => {
     const dispatch = useDispatch()
@@ -45,18 +46,33 @@ const Routes = () => {
                 </Switch>
             );
         case "Student":
+            return (
+                <Switch>
+                    <Route path="/" exact>
+                        <Layout>
+                            <StudentSchedule/>
+                        </Layout>
+                    </Route>
+                    <Redirect to="/"/>
+                </Switch>
+            );
         case "Teacher":
+            return (
+                <Switch>
+                    <Route path="/" exact>
+                        <Layout>
+                            <TeacherSchedule/>
+                        </Layout>
+                    </Route>
+                    <Redirect to="/"/>
+                </Switch>
+            );
         default:
             return (
                 <Switch>
                     <Route path="/" exact>
                         <Layout>
                             <FrontPage/>
-                        </Layout>
-                    </Route>
-                    <Route path="/student-schedule" exact>
-                        <Layout>
-                            <StudentSchedule/>
                         </Layout>
                     </Route>
                     <Redirect to="/"/>

@@ -1,4 +1,5 @@
 import {AnyAction} from "redux";
+import {UserState} from "../../type";
 
 export const GET_USER_PROFILE = "GET_USER_PROFILE"
 export const GET_USER_PROFILE_SUCCESS = "GET_USER_PROFILE_SUCCESS"

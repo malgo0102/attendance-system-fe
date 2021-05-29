@@ -9,11 +9,12 @@ import ScheduleButton from "../components/ScheduleButton";
 import Spinner from "../components/Spinner";
 import { Toolbar } from "@material-ui/core";
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
-    display: "flex",
-    maxWidth: "100vw",
+    maxWidth: "80vw",
     overflowX: "hidden",
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
 }));
 

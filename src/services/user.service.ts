@@ -1,4 +1,5 @@
 import axios from "axios";
+import {User} from "../type";
 
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;

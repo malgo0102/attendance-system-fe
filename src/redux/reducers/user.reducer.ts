@@ -1,5 +1,6 @@
 import {GET_USER_PROFILE_SUCCESS} from "../actions/user.actions";
 import {AnyAction} from "redux";
+import {UserState} from "../../type";
 
 const initialState: UserState = {
     id: undefined,

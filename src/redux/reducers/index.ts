@@ -9,6 +9,10 @@ import {
 import {History} from "history";
 import userReducer from "./user.reducer";
 import * as userSaga from "../sagas/user.saga";
+import * as teacherCoursesSaga from "../sagas/teacher.courses.saga";
+import * as teacherScheduleEventsSaga from "../sagas/teacher.schedule-events.saga";
+import teacherCoursesReducer from "./teacher.courses.reducer";
+import teacherScheduleEventsReducer from "./teacher.schedule-events.reducer";
 
 const createAppStore = ({
                             dataProvider,
@@ -17,14 +21,19 @@ const createAppStore = ({
     const reducer = combineReducers({
         admin: adminReducer,
         router: connectRouter(history),
-        user: userReducer
+        user: userReducer,
+        teacherCourses: teacherCoursesReducer,
+        teacherScheduleEvents: teacherScheduleEventsReducer
     });
 
     const saga = function* rootSaga() {
         yield all(
             [
                 adminSaga(dataProvider, null),
-                userSaga.watchRequestProfile()
+                userSaga.watchRequestProfile(),
+                teacherCoursesSaga.watchRequestTeacherCourses(),
+                teacherScheduleEventsSaga.watchCreateScheduleEvents(),
+                teacherScheduleEventsSaga.watchGetOwnScheduleEvents()
             ]
         );
     };
