@@ -14,12 +14,12 @@ const UserList = (props: ListProps) => {
         <List {...props}>
             <Datagrid>
                 <EmailField source='email'/>
-                <TextField label={"First Name"} source='firstName'/>
-                <TextField label={"Last Name"} source='lastName'/>
-                <ReferenceField label="Class" source="classId" reference="classes">
+                <TextField label={"First Name"} source='firstName' sortable={false}/>
+                <TextField label={"Last Name"} source='lastName' sortable={false}/>
+                <ReferenceField label="Class" source="classId" reference="classes" sortable={false}>
                     <TextField source="name"/>
                 </ReferenceField>
-                <ChipField source='role'/>
+                <ChipField source='role' sortable={false}/>
                 <EditButton basePath='/users'/>
                 <ShowButton basePath='/users'/>
                 <DeleteButton basePath='/users'/>

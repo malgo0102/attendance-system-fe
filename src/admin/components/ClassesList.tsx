@@ -6,7 +6,7 @@ import {
     EditButton,
     DeleteButton,
     ShowButton,
-    ListProps
+    ListProps,
 } from 'react-admin'
 
 const ClassesList = (props: ListProps) => {
