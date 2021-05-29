@@ -12,6 +12,9 @@ import {dataProvider as createDataProvider} from "../admin/data-provider";
 import Spinner from "../components/Spinner";
 import authProvider from "../admin/auth-provider";
 import ClassesShow from "../admin/components/ClassesShow";
+import CoursesList from "../admin/components/CoursesList";
+import CoursesEdit from "../admin/components/CoursesEdit";
+import CoursesCreate from "../admin/components/CoursesCreate";
 
 
 const AdminDashboard = () => {
@@ -39,6 +42,7 @@ const AdminDashboard = () => {
                 <Resource name="users" list={UsersList} create={UsersCreate} edit={UsersEdit} show={ShowGuesser}/>
                 <Resource name="classes" list={ClassesList} create={ClassesCreate} edit={ClassesEdit}
                           show={ClassesShow}/>
+                <Resource name="courses" list={CoursesList} create={CoursesCreate} edit={CoursesEdit}/>
             </Admin>
         </div>
     )
