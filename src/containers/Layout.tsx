@@ -8,6 +8,9 @@ import LogoutButton from "../components/LogoutButton";
 import ScheduleButton from "../components/ScheduleButton";
 import Spinner from "../components/Spinner";
 import { Toolbar } from "@material-ui/core";
+import CodePageButton from "../components/CodePageButton";
+import TeacherStartAttendanceButton from "../components/TeacherStartAttendanceButton";
+
 
 const useStyles = makeStyles(() => ({
   root: {
@@ -29,8 +32,11 @@ const Layout = ({ children }: Props) => {
     <>
       <div className={classes.root}>
         <NavigationBar>
+          <CodePageButton />
           <ScheduleButton />
-          {isAuthenticated ? <LogoutButton /> : <LoginButton />}</NavigationBar>
+          <TeacherStartAttendanceButton />
+          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+        </NavigationBar>
         <main>
           <Toolbar />
           {children}

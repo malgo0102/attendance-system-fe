@@ -10,6 +10,9 @@ import {getUser} from "./redux/actions/user.actions";
 import {useAppSelector} from "./hooks";
 import Spinner from "./components/Spinner";
 import TeacherSchedule from "./pages/TeacherSchedule";
+import CodePage from "./pages/CodePage";
+import TeacherStartAttendance from "./pages/TeacherStartAttendance";
+
 
 const Routes = () => {
     const dispatch = useDispatch()
