@@ -30,3 +30,14 @@ export const getAttendanceEvent = (token: string, attendanceId: string): Promise
         });
 }
 
+export const updateAttendanceEventClosed = (token: string, attendanceId: string, isClosed: boolean): Promise<Attendance> => {
+    const config = {
+        headers: {Authorization: `Bearer ${token}`},
+    };
+    return axios
+        .put(`${ATTENDANCE_URL}/${attendanceId}`, {isClosed}, config)
+        .then((response) => response.data)
+        .catch((error) => {
+            throw error.response;
+        });
+}

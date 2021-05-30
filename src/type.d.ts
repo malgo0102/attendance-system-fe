@@ -67,6 +67,7 @@ interface Attendance {
     endTime: Date;
     restrictIp: boolean;
     ip?: string
+    isClosed?: boolean
     scheduleEvent?: ScheduleEvent;
 }
 

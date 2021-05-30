@@ -10,6 +10,10 @@ export const REQUEST_ATTENDANCE_EVENT = "[Teacher] REQUEST_ATTENDANCE_EVENT"
 export const REQUEST_ATTENDANCE_EVENT_ERROR = "[Teacher] REQUEST_ATTENDANCE_EVENT_ERROR"
 export const SET_CURRENT_ATTENDANCE_EVENT = "[Teacher] SET_CURRENT_ATTENDANCE_EVENT"
 
+export const UPDATE_ATTENDANCE_EVENT_CLOSED = "[Teacher] UPDATE_ATTENDANCE_EVENT_CLOSED"
+export const UPDATE_ATTENDANCE_EVENT_CLOSED_SUCCESS = "[Teacher] UPDATE_ATTENDANCE_EVENT_CLOSED_SUCCESS"
+export const UPDATE_ATTENDANCE_EVENT_CLOSED_ERROR = "[Teacher] UPDATE_ATTENDANCE_EVENT_CLOSED_ERROR"
+
 export function startAttendance(token: string, attendance: Attendance, history: History) {
     const action: AnyAction = {
         type: START_ATTENDANCE,
@@ -33,6 +37,14 @@ export function setCurrentAttendanceEvent(attendance: Attendance) {
     const action: AnyAction = {
         type: SET_CURRENT_ATTENDANCE_EVENT,
         attendance
+    }
+    return action
+}
+
+export function updateAttendanceEventClosed(token: string, attendanceId: string, isClosed: boolean) {
+    const action: AnyAction = {
+        type: UPDATE_ATTENDANCE_EVENT_CLOSED,
+        token, attendanceId, isClosed
     }
     return action
 }

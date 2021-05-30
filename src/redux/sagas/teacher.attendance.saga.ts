@@ -1,13 +1,19 @@
 import {AnyAction} from "redux";
 import {call, put, takeLatest} from "redux-saga/effects";
-import {getAttendanceEvent, startAttendance} from "../../services/teacher.attendance.service";
+import {
+    getAttendanceEvent,
+    startAttendance,
+    updateAttendanceEventClosed
+} from "../../services/teacher.attendance.service";
 import {Attendance} from "../../type";
 import {
+    getAttendanceEvent as getAttendanceEventAction,
     REQUEST_ATTENDANCE_EVENT,
     REQUEST_ATTENDANCE_EVENT_ERROR,
     setCurrentAttendanceEvent,
     START_ATTENDANCE,
-    START_ATTENDANCE_ERROR
+    START_ATTENDANCE_ERROR,
+    UPDATE_ATTENDANCE_EVENT_CLOSED, UPDATE_ATTENDANCE_EVENT_CLOSED_ERROR
 } from "../actions/teacher.attendance.actions";
 
 export function* doStartAttendance(action: AnyAction) {
@@ -49,4 +55,25 @@ export function* doRequestAttendance(action: AnyAction) {
 
 export function* watchRequestAttendance() {
     yield takeLatest(REQUEST_ATTENDANCE_EVENT, doRequestAttendance);
+}
+
+
+export function* doUpdateAttendanceClosed(action: AnyAction) {
+    try {
+        const {token, attendanceId, isClosed} = action
+        yield call(updateAttendanceEventClosed, token, attendanceId, isClosed);
+        yield put(getAttendanceEventAction(token, attendanceId));
+    } catch (error) {
+        yield put({
+            type: UPDATE_ATTENDANCE_EVENT_CLOSED_ERROR,
+            payload: {
+                message: error.data.message,
+                statusCode: error.status,
+            },
+        });
+    }
+}
+
+export function* watchUpdateAttendanceClosed() {
+    yield takeLatest(UPDATE_ATTENDANCE_EVENT_CLOSED, doUpdateAttendanceClosed);
 }

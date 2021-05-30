@@ -6,10 +6,11 @@ import {createStyles, makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {useAppDispatch, useAppSelector} from "../hooks";
-import {getAttendanceEvent} from "../redux/actions/teacher.attendance.actions";
+import {getAttendanceEvent, updateAttendanceEventClosed} from "../redux/actions/teacher.attendance.actions";
 import {useAuth0} from "@auth0/auth0-react";
 import {Attendance} from "../type";
 import Spinner from "../components/Spinner";
+import Button from "@material-ui/core/Button";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -31,6 +32,10 @@ const useStyles = makeStyles(() =>
             display: 'flex',
             alignItems: 'center',
             flexDirection: 'column'
+        },
+        finishAttendanceContainer: {
+            display: 'flex',
+            justifyContent: 'flex-end'
         },
         body: {
             display: 'flex',
@@ -68,19 +73,25 @@ const TeacherAttendancePage = () => {
     useEffect(() => {
         const timer = setTimeout(() => {
             const secondsLeft = moment(attendanceEvent.endTime).diff(moment(), 'seconds')
-            const minutes = Math.floor((secondsLeft / 60) % 60)
+            const minutes = Math.floor((secondsLeft / 60))
             const seconds = secondsLeft - minutes * 60
             setCountdown(`${minutes}:${seconds < 10 ? "0" + seconds : seconds}`)
         }, 1000);
         return () => clearTimeout(timer);
     });
 
+    const handleEndAttendance = () => {
+        getAccessTokenSilently().then(t => {
+            dispatch(updateAttendanceEventClosed(t, id, true))
+        })
+    }
     if (!attendanceEvent) {
         return <Spinner/>
     }
-    if (moment(attendanceEvent.endTime).isBefore(moment())) {
+    if (moment(attendanceEvent.endTime).isBefore(moment()) || attendanceEvent.isClosed) {
         return <div className={classes.container}>
-            <Typography variant="h1">Expired</Typography>
+            <Typography variant="h1">Error</Typography>
+            <Typography variant="h2">This attendance event is no longer available</Typography>
         </div>
     }
 
@@ -95,6 +106,9 @@ const TeacherAttendancePage = () => {
                 className={classes.fullHeight}
             >
                 <Grid item xs={3} className={classes.fullWidth}>
+                    <div className={classes.finishAttendanceContainer}>
+                        <Button size="large" variant="contained" color="primary" onClick={handleEndAttendance}>End Attendance</Button>
+                    </div>
                     <div className={classes.header}>
                         <Typography variant="h1">{attendanceEvent.scheduleEvent?.course?.name}</Typography>
                         <Typography
