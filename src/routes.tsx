@@ -10,8 +10,7 @@ import {getUser} from "./redux/actions/user.actions";
 import {useAppSelector} from "./hooks";
 import Spinner from "./components/Spinner";
 import TeacherSchedule from "./pages/TeacherSchedule";
-import CodePage from "./pages/CodePage";
-import TeacherStartAttendance from "./pages/TeacherStartAttendance";
+import StudentCodeePage from "./pages/StudentCodeePage";
 
 
 const Routes = () => {
@@ -55,6 +54,11 @@ const Routes = () => {
                         <Layout>
                             <StudentSchedule/>
                         </Layout>
+                        <Route path="/code" exact>
+                            <Layout>
+                                <StudentCodeePage/>
+                            </Layout>
+                        </Route>
                     </Route>
                     <Redirect to="/"/>
                 </Switch>
