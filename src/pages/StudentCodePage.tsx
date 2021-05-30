@@ -33,7 +33,7 @@ const useStyles = makeStyles(() =>
 );
 
 
-const StudentCodeePage = () => {
+const StudentCodePage = () => {
     const [code, setCode] = useState("");
     const classes = useStyles();
 
@@ -75,4 +75,4 @@ const StudentCodeePage = () => {
     );
 }
 
-export default StudentCodeePage;
+export default StudentCodePage;

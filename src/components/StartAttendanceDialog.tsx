@@ -20,6 +20,7 @@ import {useAppDispatch} from "../hooks";
 import {Switch, TextField} from "formik-material-ui";
 import {useAuth0} from "@auth0/auth0-react";
 import {startAttendance} from "../redux/actions/teacher.attendance.actions";
+import {useHistory} from "react-router-dom";
 
 
 export default function StartAttendanceDialog({
@@ -29,6 +30,7 @@ export default function StartAttendanceDialog({
                                               }: { scheduleEvent: ScheduleEvent; open: boolean; handleClose: any }) {
 
     const [currentIp, setCurrentIp] = useState({loading: false, ip: ""})
+    const history = useHistory()
     const dispatch = useAppDispatch()
     const { getAccessTokenSilently} = useAuth0()
 
@@ -46,7 +48,7 @@ export default function StartAttendanceDialog({
 
     const handleSubmit = (sendValues: Attendance) => {
         getAccessTokenSilently().then(t => {
-            dispatch(startAttendance(t, sendValues))
+            dispatch(startAttendance(t, sendValues, history))
         })
         handleClose();
     }

@@ -36,7 +36,8 @@ const createAppStore = ({
                 teacherScheduleEventsSaga.watchCreateScheduleEvents(),
                 teacherScheduleEventsSaga.watchUpdateScheduleEvents(),
                 teacherScheduleEventsSaga.watchDeleteScheduleEvent(),
-                teacherAttendanceSaga.watchStartAttendance()
+                teacherAttendanceSaga.watchStartAttendance(),
+                teacherAttendanceSaga.watchRequestAttendance()
             ]
         );
     };

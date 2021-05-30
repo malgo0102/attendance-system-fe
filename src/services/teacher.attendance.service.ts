@@ -17,3 +17,16 @@ export const startAttendance = (token: string, attendance: Attendance): Promise<
         });
 }
 
+
+export const getAttendanceEvent = (token: string, attendanceId: string): Promise<Attendance> => {
+    const config = {
+        headers: {Authorization: `Bearer ${token}`},
+    };
+    return axios
+        .get(`${ATTENDANCE_URL}/${attendanceId}`, config)
+        .then((response) => response.data)
+        .catch((error) => {
+            throw error.response;
+        });
+}
+

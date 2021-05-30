@@ -1,5 +1,21 @@
 import {Moment} from "moment";
 
+import * as H from "history";
+
+export interface RouteComponentProps<P> {
+    match: match<P>;
+    location: H.Location;
+    history: H.History;
+    staticContext?: any;
+}
+
+export interface match<P> {
+    params: P;
+    isExact: boolean;
+    path: string;
+    url: string;
+}
+
 interface User {
     id?: string;
     firstName?: string;
@@ -16,6 +32,7 @@ interface ScheduleEvent {
     courseId: number;
     start: Date;
     end: Date;
+    course?: Course
 }
 interface ScheduleEventCreate extends  ScheduleEvent{
     repeatWeekly?: boolean;
@@ -36,6 +53,7 @@ interface Course {
     name: string;
     teacherId: number;
     classId: number;
+    class?: Class
 }
 
 interface CoursesState  {
@@ -49,6 +67,7 @@ interface Attendance {
     endTime: Date;
     restrictIp: boolean;
     ip?: string
+    scheduleEvent?: ScheduleEvent;
 }
 
 interface AttendanceForm extends Attendance{
