@@ -18,8 +18,8 @@ interface ScheduleEvent {
     end: Date;
 }
 interface ScheduleEventCreate extends  ScheduleEvent{
-    repeatWeekly: boolean;
-    until: Date;
+    repeatWeekly?: boolean;
+    until?: Date;
 }
 interface ScheduleEventForm extends ScheduleEventCreate {
     date: Moment;
@@ -40,4 +40,21 @@ interface Course {
 
 interface CoursesState  {
     courses: Course[];
+}
+
+interface Attendance {
+    id?: number;
+    code?: string;
+    scheduleEventId: number;
+    endTime: Date;
+    restrictIp: boolean;
+    ip?: string
+}
+
+interface AttendanceForm extends Attendance{
+    endDate: Date;
+}
+
+interface AttendanceState  {
+    currentAttendanceEvent: Attendance | undefined;
 }

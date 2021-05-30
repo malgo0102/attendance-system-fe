@@ -1,4 +1,4 @@
-import {useEffect, useState} from 'react';
+import {MouseEvent, useEffect, useState} from 'react';
 import {Calendar, momentLocalizer, View} from 'react-big-calendar';
 import moment from 'moment';
 import 'react-big-calendar/lib/css/react-big-calendar.css';
@@ -9,7 +9,10 @@ import {useDispatch} from "react-redux";
 import {useAuth0} from "@auth0/auth0-react";
 import {getOwnCourses} from "../redux/actions/teacher.courses.actions";
 import {useAppSelector} from "../hooks";
-import {getOwnScheduleEvents} from "../redux/actions/teacher.schedule-events.actions";
+import {deleteScheduleEvent, getOwnScheduleEvents} from "../redux/actions/teacher.schedule-events.actions";
+import {Menu, MenuItem} from "@material-ui/core";
+import UpdateScheduleEventDialog from "../components/UpdateScheduleEventDialog";
+import StartAttendanceDialog from "../components/StartAttendanceDialog";
 
 const localize = momentLocalizer(moment);
 moment.locale("en-GB", {
@@ -38,10 +41,22 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
+const initialCalendarEventMenuState = {
+    mouseX: null,
+    mouseY: null,
+};
+
 const TeacherSchedule = () => {
     const classes = useStyles()
     const dispatch = useDispatch()
     const {user, getAccessTokenSilently} = useAuth0()
+    const [calendarEventMenuState, setCalendarEventMenuState] = useState<{
+        mouseX: null | number;
+        mouseY: null | number;
+    }>(initialCalendarEventMenuState);
+    const [currentEventInMenu, setCurrentEventInMenu] = useState<(ScheduleEvent & { course: string } | null)>(null);
+    const [editEventDialogOpen, setEditEventDialogOpen] = useState<boolean>(false);
+    const [startAttendanceDialogOpen, setStartAttendanceDialogOpen] = useState<boolean>(false);
     const courses: Course[] = useAppSelector(state => state.teacherCourses.courses)
     const VIEWS: View[] = ["month", "week", "work_week", "day"];
     const DEFAULT_VIEW = VIEWS[2]
@@ -79,6 +94,49 @@ const TeacherSchedule = () => {
         setInitialValue(initialValues)
     }, [courses])
 
+
+    const handleClickEvent = (e: MouseEvent<HTMLDivElement>, event_: ScheduleEvent & { course: string }) => {
+        e.preventDefault();
+        setCalendarEventMenuState({
+            mouseX: e.clientX - 2,
+            mouseY: e.clientY - 4,
+        });
+        setCurrentEventInMenu(event_)
+    };
+
+    const handleCloseEventContextMenu = () => {
+        setCalendarEventMenuState(initialCalendarEventMenuState);
+        setCurrentEventInMenu(null)
+
+    };
+    const handleCloseEditEventDialog = () => {
+        setEditEventDialogOpen(false);
+        setCurrentEventInMenu(null)
+    };
+    const handleClickEditEventDialog = () => {
+        setEditEventDialogOpen(true);
+        setCalendarEventMenuState(initialCalendarEventMenuState);
+    };
+
+    const handleClickDeleteEvent = () => {
+        const confirmAction = window.confirm(
+            `Are you sure you want to delete the schedule event ? This action can not be reversed.`
+        );
+        if (confirmAction) getAccessTokenSilently().then(t => {
+            dispatch(deleteScheduleEvent(t, user.sub, currentEventInMenu?.id as number))
+        })
+        setCalendarEventMenuState(initialCalendarEventMenuState);
+    };
+
+    const handleStartAttendance = () => {
+        setStartAttendanceDialogOpen(true);
+        setCalendarEventMenuState(initialCalendarEventMenuState);
+    }
+
+    const handleCloseStartAttendanceDialog = () => {
+        setStartAttendanceDialogOpen(false);
+        setCurrentEventInMenu(null)
+    };
     return (
         <div>
             <CreateScheduleEventDialog initialValues={initialValue}/>
@@ -95,12 +153,42 @@ const TeacherSchedule = () => {
                         const backgroundColor = colorList[courses.indexOf(courses.find(c => c.id === event.courseId) as Course)] || colorList[0];
                         return {style: {backgroundColor}};
                     }}
+                    components={
+                        {
+                            eventWrapper: ({event, children}) => (
+                                <div onClick={(e) => handleClickEvent(e, event)}>
+                                    {children}
+                                </div>
+                            )
+                        }
+                    }
                     allDayAccessor={() => false}
                     titleAccessor="course"
                     startAccessor="start"
                     endAccessor="end"
                 />
             </div>
+
+            <UpdateScheduleEventDialog initialValues={currentEventInMenu} open={editEventDialogOpen}
+                                       handleClose={handleCloseEditEventDialog}/>
+            {currentEventInMenu &&
+            <StartAttendanceDialog handleClose={handleCloseStartAttendanceDialog} open={startAttendanceDialogOpen}
+                                   scheduleEvent={currentEventInMenu}/>}
+            <Menu
+                keepMounted
+                open={calendarEventMenuState.mouseY !== null}
+                onClose={handleCloseEventContextMenu}
+                anchorReference="anchorPosition"
+                anchorPosition={
+                    calendarEventMenuState.mouseY !== null && calendarEventMenuState.mouseX !== null
+                        ? {top: calendarEventMenuState.mouseY, left: calendarEventMenuState.mouseX}
+                        : undefined
+                }
+            >
+                <MenuItem onClick={handleStartAttendance}>Start Attendance</MenuItem>
+                <MenuItem onClick={handleClickEditEventDialog}>Edit</MenuItem>
+                <MenuItem onClick={handleClickDeleteEvent}>Delete</MenuItem>
+            </Menu>
         </div>
     )
 }

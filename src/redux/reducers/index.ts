@@ -1,18 +1,17 @@
 import {applyMiddleware, combineReducers, compose, createStore} from 'redux';
-import {routerMiddleware, connectRouter} from 'connected-react-router';
+import {connectRouter, routerMiddleware} from 'connected-react-router';
 import createSagaMiddleware from 'redux-saga';
 import {all} from 'redux-saga/effects';
-import {
-    adminReducer,
-    adminSaga, DataProvider
-} from 'react-admin';
+import {adminReducer, adminSaga, DataProvider} from 'react-admin';
 import {History} from "history";
 import userReducer from "./user.reducer";
 import * as userSaga from "../sagas/user.saga";
 import * as teacherCoursesSaga from "../sagas/teacher.courses.saga";
 import * as teacherScheduleEventsSaga from "../sagas/teacher.schedule-events.saga";
+import * as teacherAttendanceSaga from "../sagas/teacher.attendance.saga";
 import teacherCoursesReducer from "./teacher.courses.reducer";
 import teacherScheduleEventsReducer from "./teacher.schedule-events.reducer";
+import teacherAttendanceReducer from "./teacher.attendance.reducer";
 
 const createAppStore = ({
                             dataProvider,
@@ -23,7 +22,8 @@ const createAppStore = ({
         router: connectRouter(history),
         user: userReducer,
         teacherCourses: teacherCoursesReducer,
-        teacherScheduleEvents: teacherScheduleEventsReducer
+        teacherScheduleEvents: teacherScheduleEventsReducer,
+        teacherAttendance: teacherAttendanceReducer
     });
 
     const saga = function* rootSaga() {
@@ -32,8 +32,11 @@ const createAppStore = ({
                 adminSaga(dataProvider, null),
                 userSaga.watchRequestProfile(),
                 teacherCoursesSaga.watchRequestTeacherCourses(),
+                teacherScheduleEventsSaga.watchGetOwnScheduleEvents(),
                 teacherScheduleEventsSaga.watchCreateScheduleEvents(),
-                teacherScheduleEventsSaga.watchGetOwnScheduleEvents()
+                teacherScheduleEventsSaga.watchUpdateScheduleEvents(),
+                teacherScheduleEventsSaga.watchDeleteScheduleEvent(),
+                teacherAttendanceSaga.watchStartAttendance()
             ]
         );
     };

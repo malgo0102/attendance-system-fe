@@ -139,12 +139,10 @@ export default function CreateScheduleEventDialog({initialValues}: { initialValu
                           values,
                           setFieldValue,
                           setFieldError,
-                          errors,
                       }) => {
                         return (
                             <>
                                 <DialogContent>
-                                    {JSON.stringify(errors)}
                                     <Grid container spacing={2}>
                                         <Grid item md={6} xs={12}>
                                             <FormGroup>
