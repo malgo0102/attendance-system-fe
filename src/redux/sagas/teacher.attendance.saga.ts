@@ -1,19 +1,23 @@
 import {AnyAction} from "redux";
 import {call, put, takeLatest} from "redux-saga/effects";
 import {
-    getAttendanceEvent,
+    getAttendanceEvent, getAttendanceProgress,
     startAttendance,
     updateAttendanceEventClosed
 } from "../../services/teacher.attendance.service";
-import {Attendance} from "../../type";
+import {Attendance, AttendanceProgress} from "../../type";
 import {
     getAttendanceEvent as getAttendanceEventAction,
     REQUEST_ATTENDANCE_EVENT,
     REQUEST_ATTENDANCE_EVENT_ERROR,
+    REQUEST_ATTENDANCE_PROGRESS,
+    REQUEST_ATTENDANCE_PROGRESS_ERROR,
+    setAttendanceProgress,
     setCurrentAttendanceEvent,
     START_ATTENDANCE,
     START_ATTENDANCE_ERROR,
-    UPDATE_ATTENDANCE_EVENT_CLOSED, UPDATE_ATTENDANCE_EVENT_CLOSED_ERROR
+    UPDATE_ATTENDANCE_EVENT_CLOSED,
+    UPDATE_ATTENDANCE_EVENT_CLOSED_ERROR
 } from "../actions/teacher.attendance.actions";
 
 export function* doStartAttendance(action: AnyAction) {
@@ -76,4 +80,24 @@ export function* doUpdateAttendanceClosed(action: AnyAction) {
 
 export function* watchUpdateAttendanceClosed() {
     yield takeLatest(UPDATE_ATTENDANCE_EVENT_CLOSED, doUpdateAttendanceClosed);
+}
+
+export function* doRequestAttendanceProgress(action: AnyAction) {
+    try {
+        const {token, attendanceId} = action
+        const progress: AttendanceProgress = yield call(getAttendanceProgress, token, attendanceId);
+        yield put(setAttendanceProgress(progress));
+    } catch (error) {
+        yield put({
+            type: REQUEST_ATTENDANCE_PROGRESS_ERROR,
+            payload: {
+                message: error.data.message,
+                statusCode: error.status,
+            },
+        });
+    }
+}
+
+export function* watchRequestAttendanceProgress() {
+    yield takeLatest(REQUEST_ATTENDANCE_PROGRESS, doRequestAttendanceProgress);
 }

@@ -11,7 +11,7 @@ import DialogTitle from "@material-ui/core/DialogTitle";
 import {Box, FormControl, InputLabel, MenuItem} from "@material-ui/core";
 import Fab from "@material-ui/core/Fab";
 import AddIcon from "@material-ui/icons/Add";
-import {Formik, Field} from "formik";
+import {Field, Formik} from "formik";
 
 import ScheduleIcon from "@material-ui/icons/Schedule";
 
@@ -53,7 +53,9 @@ export default function CreateScheduleEventDialog({initialValues}: { initialValu
 
     const handleSubmit = (sendValues: ScheduleEventCreate) => {
         getAccessTokenSilently().then(t => {
-            dispatch(createScheduleEvents(t, user.sub, sendValues))
+            if (user && user.sub) {
+                dispatch(createScheduleEvents(t, user.sub, sendValues))
+            }
         })
         handleClose();
     }

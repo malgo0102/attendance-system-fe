@@ -6,11 +6,16 @@ import {createStyles, makeStyles} from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Typography from "@material-ui/core/Typography";
 import {useAppDispatch, useAppSelector} from "../hooks";
-import {getAttendanceEvent, updateAttendanceEventClosed} from "../redux/actions/teacher.attendance.actions";
+import {
+    getAttendanceEvent,
+    getAttendanceProgress,
+    updateAttendanceEventClosed
+} from "../redux/actions/teacher.attendance.actions";
 import {useAuth0} from "@auth0/auth0-react";
-import {Attendance} from "../type";
+import {Attendance, AttendanceProgress} from "../type";
 import Spinner from "../components/Spinner";
 import Button from "@material-ui/core/Button";
+import {PresentStudentsListDialog} from "../components/PresentStudentsListDialog";
 
 const useStyles = makeStyles(() =>
     createStyles({
@@ -50,6 +55,10 @@ const useStyles = makeStyles(() =>
             fontSize: '8rem',
             fontWeight: 500,
             marginRight: '100px'
+        },
+        studentsCount: {
+            display: 'flex',
+            alignItems: 'center'
         }
     })
 );
@@ -59,11 +68,17 @@ const TeacherAttendancePage = () => {
     const dispatch = useAppDispatch()
     const {user, getAccessTokenSilently} = useAuth0()
     const [countdown, setCountdown] = useState("0:00")
+    const [token, setToken] = useState("")
 
     const attendanceEvent = useAppSelector<Attendance>(state => state.teacherAttendance.currentAttendanceEvent)
+    const attendanceProgress = useAppSelector<AttendanceProgress>(state => state.teacherAttendance.currentAttendanceProgress)
+    const totalStudents = attendanceProgress.length
+    const presentStudents = attendanceProgress.filter(student => student.isPresent).length
+
     useEffect(() => {
         getAccessTokenSilently().then(t => {
             dispatch(getAttendanceEvent(t, id))
+            setToken(t)
         })
     }, [dispatch, getAccessTokenSilently, user, id])
 
@@ -71,13 +86,18 @@ const TeacherAttendancePage = () => {
 
 
     useEffect(() => {
-        const timer = setTimeout(() => {
-            const secondsLeft = moment(attendanceEvent.endTime).diff(moment(), 'seconds')
-            const minutes = Math.floor((secondsLeft / 60))
-            const seconds = secondsLeft - minutes * 60
-            setCountdown(`${minutes}:${seconds < 10 ? "0" + seconds : seconds}`)
-        }, 1000);
-        return () => clearTimeout(timer);
+        if (attendanceEvent) {
+            const timer = setTimeout(() => {
+                const secondsLeft = moment(attendanceEvent.endTime).diff(moment(), 'seconds')
+                const minutes = Math.floor((secondsLeft / 60))
+                const seconds = secondsLeft - minutes * 60
+                setCountdown(`${minutes}:${seconds < 10 ? "0" + seconds : seconds}`)
+                if (!(seconds % 5)) {
+                    dispatch(getAttendanceProgress(token, id))
+                }
+            }, 1000);
+            return () => clearTimeout(timer);
+        }
     });
 
     const handleEndAttendance = () => {
@@ -92,6 +112,8 @@ const TeacherAttendancePage = () => {
         return <div className={classes.container}>
             <Typography variant="h1">Error</Typography>
             <Typography variant="h2">This attendance event is no longer available</Typography>
+            <PresentStudentsListDialog
+                studentsList={attendanceProgress}/>
         </div>
     }
 
@@ -123,7 +145,11 @@ const TeacherAttendancePage = () => {
                 </Grid>
                 <Grid item xs={2} className={classes.fullWidth}>
                     <div className={classes.footer}>
-                        <Typography variant="h3">10/41</Typography>
+                        <div className={classes.studentsCount}>
+                            <Typography
+                                variant="h3">{presentStudents}/{totalStudents} </Typography><PresentStudentsListDialog
+                            studentsList={attendanceProgress}/>
+                        </div>
                         <Typography variant="h3">{countdown}</Typography>
                     </div>
                 </Grid>

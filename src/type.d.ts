@@ -22,6 +22,7 @@ interface User {
     lastName?: string;
     email?: string;
     role?: string;
+    classId? :number
 }
 
 type UserState = User
@@ -75,6 +76,11 @@ interface AttendanceForm extends Attendance{
     endDate: Date;
 }
 
+type AttendanceProgress = (User & {isPresent: boolean}) []
+
+
 interface AttendanceState  {
     currentAttendanceEvent: Attendance | undefined;
+    currentAttendanceProgress: AttendanceProgress
 }
+

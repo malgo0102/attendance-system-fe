@@ -1,5 +1,5 @@
 import axios from "axios";
-import {Attendance} from "../type";
+import {Attendance, AttendanceProgress} from "../type";
 
 const serverUrl = process.env.REACT_APP_SERVER_URL;
 
@@ -36,6 +36,18 @@ export const updateAttendanceEventClosed = (token: string, attendanceId: string,
     };
     return axios
         .put(`${ATTENDANCE_URL}/${attendanceId}`, {isClosed}, config)
+        .then((response) => response.data)
+        .catch((error) => {
+            throw error.response;
+        });
+}
+
+export const getAttendanceProgress = (token: string, attendanceId: string): Promise<AttendanceProgress> => {
+    const config = {
+        headers: {Authorization: `Bearer ${token}`},
+    };
+    return axios
+        .get(`${ATTENDANCE_URL}/${attendanceId}/progress`, config)
         .then((response) => response.data)
         .catch((error) => {
             throw error.response;

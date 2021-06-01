@@ -34,9 +34,8 @@ export default function UpdateScheduleEventDialog({
 
 
     const handleSubmit = (sendValues: ScheduleEvent) => {
-        console.log(sendValues)
         getAccessTokenSilently().then(t => {
-            if (sendValues.id != null) {
+            if (sendValues.id != null && user && user.sub) {
                 dispatch(updateScheduleEvent(t, user.sub, sendValues.id, sendValues))
             }
         })

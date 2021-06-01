@@ -72,8 +72,10 @@ const TeacherSchedule = () => {
     const [initialValue, setInitialValue] = useState<undefined | ScheduleEventForm>(undefined);
     useEffect(() => {
         getAccessTokenSilently().then(t => {
-            dispatch(getOwnCourses(t, user.sub))
-            dispatch(getOwnScheduleEvents(t, user.sub))
+            if (user && user.sub) {
+                dispatch(getOwnCourses(t, user.sub))
+                dispatch(getOwnScheduleEvents(t, user.sub))
+            }
         })
     }, [dispatch, getAccessTokenSilently, user])
 
@@ -123,7 +125,9 @@ const TeacherSchedule = () => {
             `Are you sure you want to delete the schedule event ? This action can not be reversed.`
         );
         if (confirmAction) getAccessTokenSilently().then(t => {
-            dispatch(deleteScheduleEvent(t, user.sub, currentEventInMenu?.id as number))
+            if (user && user.sub) {
+                dispatch(deleteScheduleEvent(t, user.sub, currentEventInMenu?.id as number))
+            }
         })
         setCalendarEventMenuState(initialCalendarEventMenuState);
     };
