@@ -1,14 +1,16 @@
-import {AppBar} from "@material-ui/core";
-import {Toolbar} from "@material-ui/core";
-import {Typography} from "@material-ui/core";
+import {AppBar, Toolbar, Typography} from "@material-ui/core";
 import React from "react";
 import {createStyles, makeStyles, Theme} from "@material-ui/core/styles";
-import {Link} from "react-router-dom";
+import {NavLink} from "react-router-dom";
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     title: {
       flexGrow: 1,
+        fontWeight: 500,
+        fontSize: "1.5rem",
+        color: theme.palette.primary.contrastText,
+        textDecoration: "none",
     },
   })
 );
@@ -18,11 +20,9 @@ const NavigationBar = ({children}: Props) => {
   return (
     <AppBar position="fixed">
       <Toolbar>
-        <Typography className={classes.title} variant="h5">
-          <Link to="/" style={{textDecoration: 'none'}}>
-            Attendance system
-          </Link>
-        </Typography>
+          <Typography className={classes.title} variant="h5" component={NavLink} to="/">
+              Attendance system
+          </Typography>
         {children}
       </Toolbar>
     </AppBar>

@@ -1,22 +1,23 @@
 import React from "react";
 
-import { makeStyles } from "@material-ui/core/styles";
+import {makeStyles} from "@material-ui/core/styles";
 import NavigationBar from "../components/NavigationBar";
-import { useAuth0 } from "@auth0/auth0-react";
+import {useAuth0} from "@auth0/auth0-react";
 import LoginButton from "../components/LoginButton";
 import LogoutButton from "../components/LogoutButton";
 import ScheduleButton from "../components/ScheduleButton";
 import Spinner from "../components/Spinner";
-import { Toolbar } from "@material-ui/core";
+import {Toolbar} from "@material-ui/core";
 import CodePageButton from "../components/CodePageButton";
 import TeacherStartAttendanceButton from "../components/TeacherStartAttendanceButton";
 
 
-const useStyles = makeStyles((theme) => ({
+const useStyles = makeStyles(() => ({
   root: {
-    // display: "flex",
-    // maxWidth: "100vw",
-    // overflowX: "hidden",
+    maxWidth: "80vw",
+    overflowX: "hidden",
+    marginLeft: 'auto',
+    marginRight: 'auto'
   },
 }));
 
@@ -31,13 +32,13 @@ const Layout = ({ children }: Props) => {
     <>
       <div className={classes.root}>
         <NavigationBar>
-          <CodePageButton />
-          <ScheduleButton />
-          <TeacherStartAttendanceButton />
-          {isAuthenticated ? <LogoutButton /> : <LoginButton />}
+          <CodePageButton/>
+          <ScheduleButton/>
+          <TeacherStartAttendanceButton/>
+          {isAuthenticated ? <LogoutButton/> : <LoginButton/>}
         </NavigationBar>
         <main>
-          <Toolbar />
+          <Toolbar/>
           {children}
         </main>
       </div>
