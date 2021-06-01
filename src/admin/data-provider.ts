@@ -10,5 +10,5 @@ export const dataProvider = (token?: string) => {
         options.headers.set('Authorization', `Bearer ${token}`);
         return fetchUtils.fetchJson(url, options);
     };
-    return simpleRestProvider('http://localhost:3005/api', httpClient)
+    return simpleRestProvider(process.env.REACT_APP_SERVER_URL + "/api", httpClient)
 }
