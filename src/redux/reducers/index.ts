@@ -9,9 +9,11 @@ import * as userSaga from "../sagas/user.saga";
 import * as teacherCoursesSaga from "../sagas/teacher.courses.saga";
 import * as teacherScheduleEventsSaga from "../sagas/teacher.schedule-events.saga";
 import * as teacherAttendanceSaga from "../sagas/teacher.attendance.saga";
+import * as studentScheduleEventsSaga from "../sagas/student.schedule-events.saga";
 import teacherCoursesReducer from "./teacher.courses.reducer";
 import teacherScheduleEventsReducer from "./teacher.schedule-events.reducer";
 import teacherAttendanceReducer from "./teacher.attendance.reducer";
+import studentScheduleEventsReducer from "./student.schedule-events.reducer";
 
 const createAppStore = ({
                             dataProvider,
@@ -23,6 +25,7 @@ const createAppStore = ({
         user: userReducer,
         teacherCourses: teacherCoursesReducer,
         teacherScheduleEvents: teacherScheduleEventsReducer,
+        studentScheduleEvents: studentScheduleEventsReducer,
         teacherAttendance: teacherAttendanceReducer
     });
 
@@ -39,7 +42,8 @@ const createAppStore = ({
                 teacherAttendanceSaga.watchStartAttendance(),
                 teacherAttendanceSaga.watchRequestAttendance(),
                 teacherAttendanceSaga.watchUpdateAttendanceClosed(),
-                teacherAttendanceSaga.watchRequestAttendanceProgress()
+                teacherAttendanceSaga.watchRequestAttendanceProgress(),
+                studentScheduleEventsSaga.watchGetOwnScheduleEvents()
             ]
         );
     };

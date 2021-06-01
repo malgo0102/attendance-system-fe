@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {Switch, Route, Redirect} from "react-router-dom";
+import {Redirect, Route, Switch} from "react-router-dom";
 import Layout from "./containers/Layout";
 import FrontPage from "./pages/FrontPage";
 import StudentSchedule from "./pages/StudentSchedule";
@@ -52,14 +52,14 @@ const Routes = () => {
             return (
                 <Switch>
                     <Route path="/" exact>
-                        <Layout>
+                        <Layout role={"Student"}>
                             <StudentSchedule/>
                         </Layout>
-                        <Route path="/code" exact>
-                            <Layout>
-                                <StudentCodePage/>
-                            </Layout>
-                        </Route>
+                    </Route>
+                    <Route path="/code" exact>
+                        <Layout role={"Student"}>
+                            <StudentCodePage/>
+                        </Layout>
                     </Route>
                     <Redirect to="/"/>
                 </Switch>
@@ -68,12 +68,12 @@ const Routes = () => {
             return (
                 <Switch>
                     <Route path="/" exact>
-                        <Layout>
+                        <Layout role={"Teacher"}>
                             <TeacherSchedule/>
                         </Layout>
                     </Route>
                     <Route path="/attendance/:id" exact>
-                        <Layout>
+                        <Layout role={"Teacher"}>
                             <TeacherAttendancePage/>
                         </Layout>
                     </Route>
@@ -84,7 +84,7 @@ const Routes = () => {
             return (
                 <Switch>
                     <Route path="/" exact>
-                        <Layout>
+                        <Layout role={"default"}>
                             <FrontPage/>
                         </Layout>
                     </Route>

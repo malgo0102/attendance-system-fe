@@ -20,6 +20,22 @@ export const getScheduleEvents = (token: string, teacherId: string): Promise<Arr
         });
 }
 
+export const getStudentScheduleEvents = (token: string, classId: string): Promise<Array<ScheduleEvent>> => {
+    const config = {
+        headers: {Authorization: `Bearer ${token}`},
+        params: {
+            filter: `["class_id", ${classId}]`
+        }
+    };
+    return axios
+        .get(SCHEDULE_EVENTS_URL, config)
+        .then((response) => response.data)
+        .catch((error) => {
+            throw error.response;
+        });
+}
+
+
 export const createScheduleEvents = (token: string, scheduleEvent: ScheduleEventCreate): Promise<Array<ScheduleEvent>> => {
     const config = {
         headers: {Authorization: `Bearer ${token}`},

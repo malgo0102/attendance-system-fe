@@ -9,7 +9,6 @@ import ScheduleButton from "../components/ScheduleButton";
 import Spinner from "../components/Spinner";
 import {Toolbar} from "@material-ui/core";
 import CodePageButton from "../components/CodePageButton";
-import TeacherStartAttendanceButton from "../components/TeacherStartAttendanceButton";
 
 
 const useStyles = makeStyles(() => ({
@@ -21,33 +20,33 @@ const useStyles = makeStyles(() => ({
   },
 }));
 
-const Layout = ({ children }: Props) => {
+const Layout = ({children, role}: Props) => {
   const classes = useStyles();
-  const { isAuthenticated, isLoading } = useAuth0();
+  const {isAuthenticated, isLoading} = useAuth0();
 
   if (isLoading) {
-    return <Spinner />;
+    return <Spinner/>;
   }
   return (
-    <>
-      <div className={classes.root}>
-        <NavigationBar>
-          <CodePageButton/>
-          <ScheduleButton/>
-          <TeacherStartAttendanceButton/>
-          {isAuthenticated ? <LogoutButton/> : <LoginButton/>}
-        </NavigationBar>
-        <main>
-          <Toolbar/>
-          {children}
-        </main>
-      </div>
-    </>
+      <>
+        <div className={classes.root}>
+          <NavigationBar>
+            {role === "Student" && <CodePageButton/>}
+            {(role === "Student" || role === "Teacher") && <ScheduleButton/>}
+            {isAuthenticated ? <LogoutButton/> : <LoginButton/>}
+          </NavigationBar>
+          <main>
+            <Toolbar/>
+            {children}
+          </main>
+        </div>
+      </>
   );
 };
 
 type Props = {
   children: React.ReactNode;
+  role: string
 };
 
 export default Layout;
